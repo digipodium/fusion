@@ -1,6 +1,6 @@
 {
-  "name": "@digipodium/fusion",
-  "version": "1.0.1",
+  "name": "@digipodium/fusion-ui",
+  "version": "1.0.0",
   "description": "React UI Component Library for React",
   "scripts": {
     "rollup": "rollup -c",
