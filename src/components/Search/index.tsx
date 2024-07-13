@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import '../Select/Search.css'; // Optional: If you want to include CSS for styling
+import '../Search/Search.css'; // Optional: If you want to include CSS for styling
 
 interface SearchProps {
     placeholder?: string;

@@ -1,5 +1,5 @@
 import React from 'react';
-import './Textarea.css'; // Optional: If you want to include CSS for styling
+import '../Textarea/TextArea.css'; // Optional: If you want to include CSS for styling
 
 interface TextareaProps {
     onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
