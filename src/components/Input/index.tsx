@@ -1,46 +1,40 @@
-import React from 'react'
-import { colorClasses, tailwindThemeClasses, variantClass } from '../../themes/themes';
-import clsx from 'clsx'
+import React from 'react';
+// import './Input.css'; // Optional: If you want to include CSS for styling
+import clsx from 'clsx';
+import tailwindClasses from '../../themes/themes';
 
 interface InputProps {
-  color?: 'primary' | 'light' | 'dark' | 'info' | 'danger' | 'warning' | 'success' | 'secondary'
-  variant?: 'default' | 'filled' | 'outlined'
-  padding?: 'xs' | 'sm'
-  radius?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'search'
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  disabled?: boolean
-  id?: string
-  label?: string
-  placeholder?: string
+    type: string;
+    placeholder?: string;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    className?: string;
+    disabled?: boolean;
+    color: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info' | 'light' | 'dark' | undefined;
+    size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined;
+    radius: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined;
+    padding: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined;
+    variant: 'filled' | 'outlined' 
 }
 
-const Input: React.FC<InputProps> = ({
-  id,
-  label,
-  placeholder,
-  disabled = false,
-  variant = 'outlined',
-  size = 'md',
-  radius = 'md',
-  type = 'text'
+const Input: React.FC<InputProps> = ({ type, placeholder, onChange, disabled, color = 'secondary',
+    size = 'md', radius = 'md', padding = 'md', variant = 'filled'
 }) => {
-  return (
-    <div>
-      <label htmlFor={id} className={clsx(tailwindThemeClasses.textSizes[size], "block text-gray-700 dark:text-gray-300")}>
-        {label}
-      </label>
-      <input
-        type={type}
-        id={id}
-        placeholder={placeholder ? placeholder : label}
-        disabled={disabled}
-        className={clsx(variantClass(
-          variant,
-          'slate-800'
-        ), tailwindThemeClasses.paddings[size], tailwindThemeClasses.radius[radius], tailwindThemeClasses.textSizes[size], "block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500")} />
-    </div>
-  )
-}
+    return (
+        <input
+            type={type}
+            placeholder={placeholder ? placeholder : placeholder}
+            onChange={onChange}
+            disabled={disabled}
+            className={clsx(['outlined'].includes(variant) ? tailwindClasses.borderClass[color] : '',
+                variant === 'outlined' ? 'bg-white' : tailwindClasses.backgroundClass[color],
+                color === 'light' ? 'text-black' : 'text-white',
+                tailwindClasses.paddingClass[padding],
+                tailwindClasses.radiusClass[radius],
+                tailwindClasses.colorClass[color],
+                tailwindClasses.textClass[size],
+                "block mx-5 my-10 w-80 border-gray-600 placeholder-gray-600 focus:ring-blue-500 focus:border-blue-500")}
+        />
+    );
+};
 
-export default Input
+export default Input;

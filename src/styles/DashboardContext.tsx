@@ -24,7 +24,7 @@ export const DashboardProvider = ({children}: { children: React.ReactNode }) => 
     }
 
     return (
-        <DashboardContext.Provider value={{}}>
+        <DashboardContext.Provider value={{ user: currentUser, setUser: setCurrentUser }}>
             {children}
         </DashboardContext.Provider>
     );

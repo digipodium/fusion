@@ -1,21 +1,19 @@
-import React from 'react'
-import { cssColors, tailwindThemeClasses } from '../../themes/themes'
 import clsx from 'clsx';
+import { FC } from 'react';
+import React from 'react';
+import tailwindClasses from '../../themes/themes';
 
 interface ButtonProps {
-  children: React.ReactNode
-  variant?: 'filled' | 'outlined' | 'text'
-  color?: 'primary' | 'secondary' | 'warning' | 'danger' | 'success' | 'info' | 'light' | 'dark' | undefined;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined;
-  padding?: 'xs' | 'sm' | undefined
-  type?: 'submit' | 'reset' | 'button'
-  disabled?: boolean
-  radius?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | undefined
-  fullWidth?: boolean
-  className?: string
-  onClick?: () => void
+  children: React.ReactNode;
+  color: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info' | 'light' | 'dark' | undefined;
+  variant: 'filled' | 'outlined' | 'default' | 'light' | undefined;
+  size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined;
+  padding: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined;
+  radius: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | undefined;
+  type: 'button' | 'submit' | 'reset' | undefined;
+  disabled: boolean;
+  onClick: () => void;
 }
-
 
 const Button: React.FC<ButtonProps> = ({
   children,
@@ -25,25 +23,26 @@ const Button: React.FC<ButtonProps> = ({
   type = "submit",
   disabled = false,
   radius = 'md',
-  fullWidth = false,
-  className = "",
   onClick = () => { }
 }) => {
 
   return (
     <button
-      onClick={onClick}
-      type={type}
-      disabled={disabled}
-      className={clsx(className,
-        tailwindThemeClasses.backgroundColors[color],
-        tailwindThemeClasses.buttonPaddings[size],
-        tailwindThemeClasses.textSizes[size],
-        tailwindThemeClasses.radius[radius],
-        fullWidth && "w-full",
-        "text-white focus:ring-4 focus:outline-none")}>
-      {children}
-    </button>
+      className={clsx('mt-5 mx-5 py-2 px-4 rounded-md focus:ring-2 focus:outline-none',
+        ['filled', 'outlined'].includes(variant) ? tailwindClasses.borderClass[color] : '',
+        color === 'light' ? 'text-black' : 'text-white',
+        onClick = onClick,
+        type = type,
+        disabled = disabled,
+        variant === 'outlined' ? 'bg-white' : tailwindClasses.backgroundClass[color],
+        tailwindClasses.sizeClass[size],
+        tailwindClasses.paddingClass[size],
+        tailwindClasses.textClass[size],
+        tailwindClasses.radiusClass[radius],
+      
+
+      )}
+    >{children}</button>
   )
 }
 

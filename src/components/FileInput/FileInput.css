@@ -1,0 +1,9 @@
+.file-input {
+    display: block;
+    margin: 10px 0;
+}
+
+.file-input.disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}

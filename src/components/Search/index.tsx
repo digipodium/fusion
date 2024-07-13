@@ -1,44 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
+import '../Select/Search.css'; // Optional: If you want to include CSS for styling
 
 interface SearchProps {
-    placeholder: string;
-    onChange?: (value: string) => void;
-    onSearch?: (value: string) => void;
+    placeholder?: string;
+    onSearch: (query: string) => void;
+    className?: string;
+    debounceTime?: number;
 }
 
-const Search: React.FC<SearchProps> = ({ placeholder, onChange, onSearch }) => {
-    const [searchValue, setSearchValue] = useState('');
+const Search: React.FC<SearchProps> = ({ placeholder, onSearch, className, debounceTime = 300 }) => {
+    const [query, setQuery] = useState('');
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
-        setSearchValue(value);
-        if (onChange) {
-            onChange(value);
-        }
+        setQuery(value);
+        debounceSearch(value);
     };
 
-    const handleSearch = () => {
-        if (onSearch) {
-            onSearch(searchValue);
-        }
+    const debounceSearch = (query: string) => {
+        setTimeout(() => {
+            onSearch(query);
+        }, debounceTime);
+    };
+
+    const handleFormSubmit = (event: FormEvent) => {
+        event.preventDefault();
+        onSearch(query);
     };
 
     return (
-        <div className="flex items-center justify-center">
+        <form onSubmit={handleFormSubmit} className={`search-form ${className}`}>
             <input
                 type="text"
+                value={query}
+                onChange={handleInputChange}
                 placeholder={placeholder}
-                className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                onChange={handleChange}
+                className="search-input"
             />
-            <button
-                type="button"
-                className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                onClick={handleSearch}
-            >
-                Search
-            </button>
-        </div>
+            <button type="submit" className="search-button ">Search</button>
+        </form>
     );
 };
 
