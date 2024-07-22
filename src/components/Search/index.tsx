@@ -1,5 +1,4 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import '../Search/Search.css'; // Optional: If you want to include CSS for styling
+import React, { useState, useEffect, useRef, ChangeEvent, FormEvent } from 'react';
 
 interface SearchProps {
     placeholder?: string;
@@ -10,6 +9,7 @@ interface SearchProps {
 
 const Search: React.FC<SearchProps> = ({ placeholder, onSearch, className, debounceTime = 300 }) => {
     const [query, setQuery] = useState('');
+    const debounceTimeout = useRef<number | undefined>(undefined);
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -18,7 +18,10 @@ const Search: React.FC<SearchProps> = ({ placeholder, onSearch, className, debou
     };
 
     const debounceSearch = (query: string) => {
-        setTimeout(() => {
+        if (debounceTimeout.current) {
+            clearTimeout(debounceTimeout.current);
+        }
+        debounceTimeout.current = window.setTimeout(() => {
             onSearch(query);
         }, debounceTime);
     };
@@ -28,16 +31,26 @@ const Search: React.FC<SearchProps> = ({ placeholder, onSearch, className, debou
         onSearch(query);
     };
 
+    useEffect(() => {
+        return () => {
+            if (debounceTimeout.current) {
+                clearTimeout(debounceTimeout.current);
+            }
+        };
+    }, []);
+
     return (
-        <form onSubmit={handleFormSubmit} className={`search-form ${className}`}>
+        <form onSubmit={handleFormSubmit} className={`flex items-center ${className}`}>
             <input
                 type="text"
                 value={query}
                 onChange={handleInputChange}
                 placeholder={placeholder}
-                className="search-input"
+                className="p-2"
             />
-            <button type="submit" className="search-button ">Search</button>
+            <button type="submit" className="p-2 px-4 text-base border-none bg-blue-500 text-white rounded ml-2 cursor-pointer hover:bg-blue-700">
+                Search
+            </button>
         </form>
     );
 };
